@@ -56,6 +56,12 @@ static func create_unknown_session(p_session_id: String) -> NetworkSession:
 	return session
 
 
+## init
+func _init(p_uuid: String = UUID.v4()) -> void:
+	super._init(p_uuid)
+	_set_class_name("NetworkSession")
+
+
 ## Sets the position of a node in the priority order
 func set_priority_order(p_node: NetworkNode, p_position: int) -> bool:
 	return false

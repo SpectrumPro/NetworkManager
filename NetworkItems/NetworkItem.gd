@@ -27,17 +27,20 @@ var _class_name: String
 var _class_tree: Array[String]
 
 ## The SettingsManager instance associated with this object. Variable name can be arbitrary.
-var _settings: SettingsManager
+var _settings: SettingsManager = SettingsManager.new()
 
 
-## init1.
+## init.
 func _init(p_uuid: String = UUID.v4()) -> void:
 	_uuid = p_uuid
-	_set_class_name("GlobalBaseClass")
+	_set_class_name("NetworkNode")
+	
+	_settings.set_owner(self)
+	_settings.set_inheritance_array(_class_tree)
 
 
 ## Returns the user-defined name of this object.
-func get_name() -> StringName:
+func get_uname() -> String:
 	return _name
 
 
@@ -62,7 +65,7 @@ func get_settings() -> SettingsManager:
 
 
 ## Sets the name of this object. If p_no_signal is true, the name_changed signal is not emitted.
-func set_name(p_name: StringName, p_no_signal: bool = false) -> void:
+func set_uname(p_name: String, p_no_signal: bool = false) -> void:
 	_name = p_name
 	
 	if not p_no_signal:
@@ -81,7 +84,7 @@ func serialize(p_flags: Data.SerializationFlags) -> Dictionary[String, Variant]:
 
 ## Deserializes data either read from disk or returned by serialize().
 func deserialize(p_serialized_data: Dictionary, p_flags: Data.SerializationFlags) -> void:
-	set_name(type_convert(p_serialized_data.get("name", _name), TYPE_STRING), true)
+	set_uname(type_convert(p_serialized_data.get("name", _name), TYPE_STRING), true)
 	
 	if not p_flags & Data.SerializationFlags.NO_UUID:
 		_uuid = type_convert(p_serialized_data.get("uuid", _uuid), TYPE_STRING)

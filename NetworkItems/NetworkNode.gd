@@ -87,6 +87,12 @@ static func create_unknown_node(p_node_id: String) -> NetworkNode:
 	return node
 
 
+## init
+func _init(p_uuid: String = UUID.v4()) -> void:
+	super._init(p_uuid)
+	_set_class_name("NetworkNode")
+
+
 ## Joins the given session
 func join_session(p_session: NetworkSession) -> bool:
 	return false
@@ -128,6 +134,11 @@ func get_session_id() -> String:
 ## Returns the last time this node was seen on the network
 func get_last_seen_time() -> float:
 	return _last_seen
+
+
+## Gets the name of this NetworkNode
+func get_node_name() -> String:
+	return _name
 
 
 ## Sends a message to set the name of this node on the network

@@ -39,8 +39,13 @@ var _network_state: NetworkState = NetworkState.OFFLINE
 ## Previous error code of the NetworkState
 var _network_state_err_code: Error = FAILED
 
-## Human readable NetworkHandler name
-var _handler_name: String = "NetworkHandler"
+
+## init.
+func _init(p_uuid: String = UUID.v4()) -> void:
+	super._init(p_uuid)
+	
+	_set_class_name("NetworkHandler")
+	set_uname("NetworkHandler", true)
 
 
 ## Starts the local node
@@ -105,4 +110,4 @@ func get_unknown_sessions() -> Array[NetworkSession]:
 
 ## Gets the name of this network handler
 func get_handler_name() -> String:
-	return _handler_name
+	return _name

@@ -1,5 +1,6 @@
 # Copyright (c) 2026 Liam Sherwin, All rights reserved.
 # This file is part of the NetworkManager Utility, licensed under the GPL v3.
+# See the LICENSE file for details.
 
 class_name NetworkManager extends Node
 ## Manages NetworkHandlers
@@ -38,15 +39,18 @@ var _networked_objects_signal_connections: Dictionary[SettingsManager, Dictionar
 var _awaiting_responces: Dictionary[String, Promise]
 
 ## The SettingsManager for NetworkManager
-var _settings_manager: SettingsManager = SettingsManager.new()
+var _settings: SettingsManager = SettingsManager.new()
 
 
 ## Init
 func _init() -> void:
-	_settings_manager.set_owner(self)
-	_settings_manager.set_inheritance_array(["NetworkManager"])
-	_settings_manager.register_control("StartAll", Data.Type.ACTION, start_all, Callable(), [])
-	_settings_manager.register_control("StopAll", Data.Type.ACTION, stop_all, Callable(), [])
+	_settings.set_owner(self)
+	_settings.set_inheritance_array(["NetworkManager"])
+	
+	_settings.register_control("StartAll", Data.Type.ACTION, start_all, Callable(), [])
+	_settings.register_control("StopAll", Data.Type.ACTION, stop_all, Callable(), [])
+	
+	NetworkConfig.load_config("res://NetworkConfig.gd")
 
 
 ## Ready
@@ -75,8 +79,8 @@ func _process(_p_delta: float) -> void:
 
 
 ## Gets the SettingsManager
-func settings() -> SettingsManager:
-	return _settings_manager
+func get_settings() -> SettingsManager:
+	return _settings
 
 
 ## Starts all the NetworkHandlers
@@ -310,7 +314,7 @@ class NetworkConfig extends Object:
 	static var network_item_object_db: ObjectDB
 	
 	## All available NetworkHandlers that can be loaded
-	static var available_handlers: Dictionary[String, Script] = {}
+	static var available_handlers: Dictionary = {}
 	
 	
 	## Loads config from a file
