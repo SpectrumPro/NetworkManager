@@ -1,0 +1,3 @@
+[submodule "modules/Utils"]
+	path = modules/Utils
+	url = https://github.com/SpectrumPro/utils
