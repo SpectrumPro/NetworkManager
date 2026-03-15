@@ -11,16 +11,13 @@ func _init() -> void:
 	_global_class_tree = {
 		"NetworkItem": {
 			"NetworkHandler": {
-				"Constellation": Constellation,
 				"NetworkHandler": NetworkHandler
 			},
 			"NetworkSession": {
 				"NetworkSession": NetworkSession,
-				"ConstellationSession": ConstellationSession
 			},
 			"NetworkNode": {
 				"NetworkNode": NetworkNode,
-				"ConstellationNode": ConstellationNode,
 			},
 			"NetworkItem": NetworkItem
 		}
