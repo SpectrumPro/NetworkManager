@@ -33,7 +33,7 @@ var _settings: SettingsManager = SettingsManager.new()
 ## init.
 func _init(p_uuid: String = UUID.v4()) -> void:
 	_uuid = p_uuid
-	_set_class_name("NetworkNode")
+	_set_class_name("NetworkItem")
 	
 	_settings.set_owner(self)
 	_settings.set_inheritance_array(_class_tree)
