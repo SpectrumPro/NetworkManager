@@ -42,19 +42,19 @@ var _awaiting_responces: Dictionary[String, Promise]
 var _settings: SettingsManager = SettingsManager.new()
 
 
-## Init
+## init
 func _init() -> void:
 	_settings.set_owner(self)
 	_settings.set_inheritance_array(["NetworkManager"])
 	
 	_settings.register_control("StartAll", Data.Type.ACTION, start_all, Callable(), [])
 	_settings.register_control("StopAll", Data.Type.ACTION, stop_all, Callable(), [])
-	
-	NetworkConfig.load_config("res://NetworkConfig.gd")
 
 
-## Ready
+## ready
 func _ready() -> void:
+	NetworkConfig.load_config("res://NetworkConfig.gd")
+	
 	for handler_name: String in NetworkConfig.available_handlers:
 		var new_handler: NetworkHandler =  NetworkConfig.available_handlers[handler_name].new()
 		
