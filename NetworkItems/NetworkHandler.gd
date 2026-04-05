@@ -40,9 +40,9 @@ var _network_state: NetworkState = NetworkState.OFFLINE
 var _network_state_err_code: Error = FAILED
 
 
-## init.
-func _init(p_uuid: String = UUID.v4()) -> void:
-	super._init(p_uuid)
+## init
+func _init(p_uuid: String = UUID.v4(), ...p_args: Array[Variant]) -> void:
+	super._init(p_uuid, p_args)
 	
 	_set_class_name("NetworkHandler")
 	set_uname("NetworkHandler", true)

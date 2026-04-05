@@ -30,8 +30,8 @@ var _class_tree: Array[String]
 var _settings: SettingsManager = SettingsManager.new()
 
 
-## init.
-func _init(p_uuid: String = UUID.v4()) -> void:
+## init
+func _init(p_uuid: String = UUID.v4(), ...p_args: Array[Variant]) -> void:
 	_uuid = p_uuid
 	_set_class_name("NetworkItem")
 	
