@@ -7,11 +7,11 @@ class_name NetworkItem extends Node
 
 
 ## Emitted when the user-defined name of this object changes.
-signal name_changed()
+signal name_changed(new_name: String)
 
 ## Emitted when this object is to be deleted (freed from memory). 
 @warning_ignore("unused_signal")
-signal delete_requested()
+signal delete_requested(from: Object)
 
 
 ## The user-defined name of this object. The variable name can be arbitrary.
@@ -70,6 +70,11 @@ func set_uname(p_name: String, p_no_signal: bool = false) -> void:
 	
 	if not p_no_signal:
 		name_changed.emit(_name)
+
+
+## NOP as NetworkItems do not support delete reqeuests
+func delete() -> void:
+	return
 
 
 ## Returns a JSON-compliant dictionary containing a serialized version of this object.
