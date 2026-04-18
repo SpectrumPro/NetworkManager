@@ -2,7 +2,7 @@
 # This file is part of the NetworkManager Utility, licensed under the GPL v3.
 # See the LICENSE file for details.
 
-class_name NetworkManager extends Node
+class_name CoreNetworkManager extends CoreGlobal
 ## Manages NetworkHandlers
 
 
@@ -38,14 +38,11 @@ var _networked_objects_signal_connections: Dictionary[SettingsManager, Dictionar
 ## Contains all Promises awaiting a responce from the network
 var _awaiting_responces: Dictionary[String, Promise]
 
-## The SettingsManager for NetworkManager
-var _settings: SettingsManager = SettingsManager.new()
-
 
 ## init
-func _init() -> void:
-	_settings.set_owner(self)
-	_settings.set_inheritance_array(["NetworkManager"])
+func _init(p_uuid: String = "", ...p_args: Array[Variant]) -> void:
+	super._init(p_uuid, p_args)
+	_set_class_name("CoreNetworkManager")
 	
 	_settings.register_control("StartAll", Data.Type.ACTION, start_all, Callable(), [])
 	_settings.register_control("StopAll", Data.Type.ACTION, stop_all, Callable(), [])
@@ -302,16 +299,16 @@ func _on_command_recieved(p_from: NetworkNode, p_type: Variant.Type, p_command: 
 ## Stores config for NetworkManager
 class NetworkConfig extends Object:
 	## The instance of ClassListDB asigned to the networkable class 
-	static var networkable_class_list: ClassListDB
+	static var networkable_class_list: CoreClassListDB
 	
 	## The instance of ObjectDB asigned to the networkable class 
-	static var networkable_object_db: ObjectDB
+	static var networkable_object_db: CoreObjectDB
 	
 	## The instacne of ClassListDB for NetworkItems
-	static var network_item_class_list: ClassListDB
+	static var network_item_class_list: CoreClassListDB
 	
 	## The instance of ObjectDB for NetworkItems
-	static var network_item_object_db: ObjectDB
+	static var network_item_object_db: CoreObjectDB
 	
 	## All available NetworkHandlers that can be loaded
 	static var available_handlers: Dictionary = {}
