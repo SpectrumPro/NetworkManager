@@ -298,16 +298,16 @@ func _on_command_recieved(p_from: NetworkNode, p_type: Variant.Type, p_command: 
 
 ## Stores config for NetworkManager
 class NetworkConfig extends Object:
-	## The instance of ClassListDB asigned to the networkable class 
+	## The instance of CoreClassListDB asigned to the networkable class 
 	static var networkable_class_list: CoreClassListDB
 	
-	## The instance of ObjectDB asigned to the networkable class 
+	## The instance of CoreObjectDB asigned to the networkable class 
 	static var networkable_object_db: CoreObjectDB
 	
-	## The instacne of ClassListDB for NetworkItems
+	## The instacne of CoreClassListDB for NetworkItems
 	static var network_item_class_list: CoreClassListDB
 	
-	## The instance of ObjectDB for NetworkItems
+	## The instance of CoreObjectDB for NetworkItems
 	static var network_item_object_db: CoreObjectDB
 	
 	## All available NetworkHandlers that can be loaded

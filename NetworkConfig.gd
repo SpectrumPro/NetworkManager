@@ -1,14 +1,14 @@
 static var config: Dictionary[String, Variant] = {
-	## The instance of ClassListDB asigned to the networkable class 
+	## The instance of CoreClassListDB asigned to the networkable class 
 	"networkable_class_list": null,
 	
-	## The instance of ObjectDB asigned to the networkable class 
+	## The instance of CoreObjectDB asigned to the networkable class 
 	"networkable_object_db": null,
 	
-	## The instacne of ClassListDB for NetworkItems
+	## The instacne of CoreClassListDB for NetworkItems
 	"network_item_class_list": null,
 	
-	## The instance of ObjectDB for NetworkItems
+	## The instance of CoreObjectDB for NetworkItems
 	"network_item_object_db": null,
 	
 	## All available NetworkHandlers that can be loaded

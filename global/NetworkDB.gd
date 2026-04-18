@@ -12,6 +12,6 @@ func _init(p_uuid: String = "", ...p_args: Array[Variant]) -> void:
 	_set_class_name("NetworkItemDB")
 
 
-## Returns true if the given component is allowed in this ObjectDB
+## Returns true if the given component is allowed in this CoreObjectDB
 func is_component_allowed(p_component: Object) -> bool:
 	return p_component is NetworkItem
