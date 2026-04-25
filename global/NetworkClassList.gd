@@ -10,7 +10,11 @@ class_name NetworkItemClassList extends CoreClassListDB
 func _init(p_uuid: String = "", ...p_args: Array[Variant]) -> void:
 	super._init(p_uuid, p_args)
 	_set_class_name("NetworkItemClassList")
-	
+
+
+## ready
+func _ready() -> void:
+	_gbc_index = Data.get_gbc_config(NetworkItem)
 	_global_class_tree = {
 		"NetworkItem": {
 			"NetworkHandler": {
@@ -25,3 +29,5 @@ func _init(p_uuid: String = "", ...p_args: Array[Variant]) -> void:
 			"NetworkItem": NetworkItem
 		}
 	}
+	
+	super._ready()
