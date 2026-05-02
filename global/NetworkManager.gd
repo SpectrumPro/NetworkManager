@@ -149,7 +149,7 @@ func register_network_object(p_id: String, p_settings_manager: SettingsManager) 
 		_networked_objects_signal_connections.get_or_add(p_settings_manager, {})[p_signal] = method
 	
 	if not p_settings_manager.get_delete_signal().is_null():
-		p_settings_manager.get_delete_signal().connect(deregister_network_object.bind(p_settings_manager), CONNECT_ONE_SHOT)
+		p_settings_manager.get_delete_signal().connect(_on_network_object_delete_request.bind(p_settings_manager), CONNECT_ONE_SHOT)
 	
 	_registered_network_objects.map(p_id, p_settings_manager)
 
@@ -184,7 +184,7 @@ func get_items_by_classname(p_classname: String) -> Array:
 ## Replaces any object in the given data with uuid refernces. Checks sub arrays and dictionarys
 func serialize_objects(p_data: Variant, p_flags: int = Data.NetworkFlags.NONE) -> Variant:
 	match typeof(p_data):
-		TYPE_OBJECT when NetworkConfig.networkable_object_db.has_component(p_data):
+		TYPE_OBJECT when NetworkConfig.networkable_object_db.is_component_allowed(p_data):
 			return {
 					"_object_ref": p_data.get_uuid(),
 				}.merged({
@@ -227,7 +227,8 @@ func deserialize_objects(p_data: Variant, p_flags: int = Data.NetworkFlags.NONE)
 					
 					if p_data.has("_serialized_object") and typeof(p_data._serialized_object) == TYPE_DICTIONARY:
 						initialized_object.deserialize(p_data._serialized_object, Data.SerializationFlags.NONE)
-						
+					
+					NetworkConfig.networkable_object_db.register_component(initialized_object, true)
 					return initialized_object
 				
 				elif p_flags & Data.NetworkFlags.ALLOW_UNRESOLVED:
@@ -294,6 +295,11 @@ func _on_command_recieved(p_from: NetworkNode, p_type: Variant.Type, p_command: 
 					_awaiting_responces.erase(msg_id)
 	
 	command_recieved.emit(p_from, p_type, p_command)
+
+
+## Called when a network objects delete request signal is emitted
+func _on_network_object_delete_request(_p_object: Object, p_settings: SettingsManager) -> void:
+	deregister_network_object(p_settings)
 
 
 ## Stores config for NetworkManager
