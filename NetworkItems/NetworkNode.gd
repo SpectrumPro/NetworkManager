@@ -35,12 +35,14 @@ signal last_seen_changed(last_seen: float)
 
 ## State Enum for remote node
 enum ConnectionState {
-	UNKNOWN,			## No state assigned yet
-	OFFLINE,			## Node is offline
-	DISCOVERED,			## Node was found via discovery
-	CONNECTING,			## Attempting to establish connection
-	CONNECTED,			## Successfully connected and active
-	LOST_CONNECTION,	## Node timed out or disconnected unexpectedly
+	UNKNOWN,					## No state assigned yet
+	OFFLINE,					## Node is offline
+	DISCOVERED,					## Node was found via discovery
+	CONNECTING,					## Attempting to establish connection
+	AWAITING_CONNECTION_ACK,	## Awaiting a connection acknowledgement from the remote node
+	CONNECTED,					## Successfully connected and active
+	CONNECTION_ERROR,			## Error occurred while connecting
+	LOST_CONNECTION,			## Node timed out or disconnected unexpectedly
 }
 
 ## Enum for node flags

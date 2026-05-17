@@ -72,9 +72,9 @@ func set_uname(p_name: String, p_no_signal: bool = false) -> void:
 		name_changed.emit(_name)
 
 
-## NOP as NetworkItems do not support delete reqeuests
+## Emits delete_requested
 func delete() -> void:
-	return
+	delete_requested.emit(self)
 
 
 ## Returns a JSON-compliant dictionary containing a serialized version of this object.
