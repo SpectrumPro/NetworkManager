@@ -29,8 +29,8 @@ signal is_now_session_master()
 ## Emitted if this node is no longer the master of its session
 signal is_no_longer_session_master()
 
-## Emitted when the last seen time is changed, IE the node was just seen
-signal last_seen_changed(last_seen: float)
+## Emitted when the ping time to the node changes
+signal ping_changed(ping: float)
 
 
 ## State Enum for remote node
@@ -68,8 +68,8 @@ var _is_unknown: bool = false
 ## The Session
 var _session: NetworkSession
 
-## UNIX timestamp of the last time this node was seen on the network
-var _last_seen: float = 0
+## Network ping time in seconds
+var _ping: float = 0
 
 
 ## Creates a new ConstellationNode in LocalNode mode
@@ -134,8 +134,8 @@ func get_session_id() -> String:
 
 
 ## Returns the last time this node was seen on the network
-func get_last_seen_time() -> float:
-	return _last_seen
+func get_ping_time() -> float:
+	return snappedf(_ping, 0.001)
 
 
 ## Gets the name of this NetworkNode
