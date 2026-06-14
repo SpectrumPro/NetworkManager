@@ -32,6 +32,9 @@ signal is_no_longer_session_master()
 ## Emitted when the ping time to the node changes
 signal ping_changed(ping: float)
 
+## Emitted when this node is found on the network, when it was orignaly marked as unknown
+signal no_longer_unknown()
+
 
 ## State Enum for remote node
 enum ConnectionState {
