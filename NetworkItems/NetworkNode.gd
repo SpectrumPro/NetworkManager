@@ -172,3 +172,14 @@ func is_unknown() -> bool:
 ## Returns true if this node is the master of its session
 func is_sesion_master() -> bool:
 	return _is_session_master
+
+
+## Returns True if the current connection state is either in the process of connecting, or is connected
+func is_in_connection_state() -> bool:
+	var connection_states: Array[ConnectionState] = [
+		ConnectionState.CONNECTING, 
+		ConnectionState.AWAITING_CONNECTION_ACK, 
+		ConnectionState.CONNECTED
+	]
+	
+	return _connection_state in connection_states
