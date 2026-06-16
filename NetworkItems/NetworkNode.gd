@@ -29,6 +29,9 @@ signal is_now_session_master()
 ## Emitted if this node is no longer the master of its session
 signal is_no_longer_session_master()
 
+## Emitted when the priority of this node is changed in its session
+signal priority_changed(p_priority: int)
+
 ## Emitted when the ping time to the node changes
 signal ping_changed(ping: float)
 
@@ -136,6 +139,14 @@ func get_session_id() -> String:
 	return ""
 
 
+## Returns the priority of this node in it session
+func get_priority() -> int:
+	if not is_instance_valid(_session):
+		return -1
+	
+	return _session.get_priority_of(self)
+
+
 ## Returns the last time this node was seen on the network
 func get_ping_time() -> float:
 	return snappedf(_ping, 0.001)
@@ -157,6 +168,14 @@ func set_session(p_session: NetworkSession) -> bool:
 		return join_session(p_session)
 	else:
 		return leave_session()
+
+
+## Sets the priority of this node in its current session
+func set_priority(p_priority: int) -> void:
+	if not is_instance_valid(_session):
+		return
+	
+	_session.set_priority_order(self, p_priority)
 
 
 ## Returns True if this node is local
