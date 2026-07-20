@@ -162,6 +162,11 @@ func set_node_name(p_name: String) -> void:
 	pass
 
 
+## Override GBC set_uname method to set node name
+func set_uname(p_name: String, p_no_signal: bool = false) -> void:
+	set_node_name(p_name)
+
+
 ## Sets the session
 func set_session(p_session: NetworkSession) -> bool:
 	if is_instance_valid(p_session):
