@@ -77,6 +77,11 @@ func set_session_name(p_name: String) -> bool:
 	return false
 
 
+## Override set_uname to call set_session_name
+func set_uname(p_name: String, p_no_signal: bool = false) -> void:
+	set_session_name(p_name)
+
+
 ## Gets all nodes in this session
 func get_nodes() -> Array[NetworkNode]:
 	return []
@@ -105,6 +110,11 @@ func get_priority_of(p_node: NetworkNode) -> int:
 ## Gets the session name
 func get_session_name() -> String:
 	return _name
+
+
+## Override get_uname to call get_session_name
+func get_uname() -> String:
+	return get_session_name()
 
 
 ## Gets the session flags
