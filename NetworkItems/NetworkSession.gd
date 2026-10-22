@@ -63,7 +63,7 @@ func _init(p_uuid: String = UUID.v4(), ...p_args: Array[Variant]) -> void:
 
 
 ## Sets the position of a node in the priority order
-func set_priority_order(p_node: NetworkNode, p_position: int) -> bool:
+func set_node_priority(p_node: NetworkNode, p_position: int) -> bool:
 	return false
 
 
@@ -98,8 +98,8 @@ func get_session_master() -> NetworkNode:
 
 
 ## Returns the priority order
-func get_priority_order() -> Array[NetworkNode]:
-	return []
+func get_priority_order() -> Dictionary[int, NetworkNode]:
+	return {}
 
 
 ## Returns the priority order

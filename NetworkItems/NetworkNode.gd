@@ -180,7 +180,7 @@ func set_priority(p_priority: int) -> void:
 	if not is_instance_valid(_session):
 		return
 	
-	_session.set_priority_order(self, p_priority)
+	_session.set_node_priority(self, p_priority)
 
 
 ## Returns True if this node is local
