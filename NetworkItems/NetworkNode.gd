@@ -46,8 +46,9 @@ enum ConnectionState {
 	DISCOVERED,					## Node was found via discovery
 	CONNECTING,					## Attempting to establish connection
 	AWAITING_CONNECTION_ACK,	## Awaiting a connection acknowledgement from the remote node
-	CONNECTED,					## Successfully connected and active
 	CONNECTION_ERROR,			## Error occurred while connecting
+	CONNECTED,					## Successfully connected and active
+	AWAITING_DISCONNECT_ACK,	## Awaiting a disconnection acknowledgement
 	LOST_CONNECTION,			## Node timed out or disconnected unexpectedly
 }
 
@@ -149,7 +150,10 @@ func get_priority() -> int:
 
 ## Returns the last time this node was seen on the network
 func get_ping_time() -> float:
-	return snappedf(_ping, 0.001)
+	if is_node_connected():
+		return snappedf(_ping, 0.001)
+	else:
+		return NAN
 
 
 ## Gets the name of this NetworkNode
@@ -208,7 +212,8 @@ func is_in_connection_state() -> bool:
 	var connection_states: Array[ConnectionState] = [
 		ConnectionState.CONNECTING, 
 		ConnectionState.AWAITING_CONNECTION_ACK, 
-		ConnectionState.CONNECTED
+		ConnectionState.CONNECTED,
+		ConnectionState.AWAITING_DISCONNECT_ACK
 	]
 	
 	return _connection_state in connection_states
