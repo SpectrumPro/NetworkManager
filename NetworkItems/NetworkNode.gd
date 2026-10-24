@@ -193,6 +193,11 @@ func is_unknown() -> bool:
 	return _node_flags & NodeFlags.UNKNOWN
 
 
+## Returns true if this node is connected
+func is_node_connected() -> bool:
+	return _connection_state == ConnectionState.CONNECTED
+
+
 ## Returns true if this node is the master of its session
 func is_sesion_master() -> bool:
 	return _is_session_master
