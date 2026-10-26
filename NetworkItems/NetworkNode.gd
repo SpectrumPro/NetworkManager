@@ -213,7 +213,6 @@ func is_in_connection_state() -> bool:
 		ConnectionState.CONNECTING, 
 		ConnectionState.AWAITING_CONNECTION_ACK, 
 		ConnectionState.CONNECTED,
-		ConnectionState.AWAITING_DISCONNECT_ACK
 	]
 	
 	return _connection_state in connection_states
