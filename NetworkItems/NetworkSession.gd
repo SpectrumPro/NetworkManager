@@ -19,9 +19,6 @@ signal master_changed(node: NetworkNode)
 ## Emitted when the priority order of a node is changed
 signal priority_changed(node: NetworkNode, position: int)
 
-## Emitted when the session name is changed
-signal session_name_changed(session_name: String)
-
 
 ## Enum for session flags
 enum SessionFlags {
