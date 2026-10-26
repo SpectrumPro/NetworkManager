@@ -162,8 +162,8 @@ func get_node_name() -> String:
 
 
 ## Sends a message to set the name of this node on the network
-func set_node_name(p_name: String) -> void:
-	pass
+func set_node_name(p_name: String) -> bool:
+	return true
 
 
 ## Override GBC set_uname method to set node name
