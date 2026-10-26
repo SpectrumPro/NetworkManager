@@ -207,12 +207,35 @@ func is_sesion_master() -> bool:
 	return _is_session_master
 
 
-## Returns True if the current connection state is either in the process of connecting, or is connected
+## Returns true if this node is connected, or in the process of connecting
 func is_in_connection_state() -> bool:
 	var connection_states: Array[ConnectionState] = [
 		ConnectionState.CONNECTING, 
 		ConnectionState.AWAITING_CONNECTION_ACK, 
 		ConnectionState.CONNECTED,
+	]
+	
+	return _connection_state in connection_states
+
+
+## Returns true if this node is in a offline state
+func is_in_offline_state() -> bool:
+	var connection_states: Array[ConnectionState] = [
+		ConnectionState.UNKNOWN,
+		ConnectionState.OFFLINE, 
+		ConnectionState.LOST_CONNECTION,
+	]
+	
+	return _connection_state in connection_states
+
+
+## Returns true if this node is in a discovered but not connected state
+## This also counts disconnection states as not connected
+func is_in_discovered_state() -> bool:
+	var connection_states: Array[ConnectionState] = [
+		ConnectionState.DISCOVERED,
+		ConnectionState.AWAITING_DISCONNECT_ACK, 
+		ConnectionState.CONNECTION_ERROR,
 	]
 	
 	return _connection_state in connection_states
