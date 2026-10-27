@@ -223,7 +223,16 @@ func is_in_offline_state() -> bool:
 	var connection_states: Array[ConnectionState] = [
 		ConnectionState.UNKNOWN,
 		ConnectionState.OFFLINE, 
-		ConnectionState.LOST_CONNECTION,
+	]
+	
+	return _connection_state in connection_states
+
+
+## Returns true if this node is an an error state
+func is_in_error_state() -> bool:
+	var connection_states: Array[ConnectionState] = [
+		ConnectionState.CONNECTION_ERROR,
+		ConnectionState.LOST_CONNECTION, 
 	]
 	
 	return _connection_state in connection_states
