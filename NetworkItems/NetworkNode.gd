@@ -32,8 +32,8 @@ signal is_no_longer_session_master()
 ## Emitted when the priority of this node is changed in its session
 signal priority_changed(p_priority: int)
 
-## Emitted when the ping time to the node changes
-signal ping_changed(ping: float)
+## Emitted when the ping time to the node changes, stored as milliseconds
+signal ping_changed(ping: int)
 
 ## Emitted when this node is found on the network, when it was orignaly marked as unknown
 signal no_longer_unknown()
@@ -46,8 +46,9 @@ enum ConnectionState {
 	DISCOVERED,					## Node was found via discovery
 	CONNECTING,					## Attempting to establish connection
 	AWAITING_CONNECTION_ACK,	## Awaiting a connection acknowledgement from the remote node
-	CONNECTED,					## Successfully connected and active
 	CONNECTION_ERROR,			## Error occurred while connecting
+	CONNECTED,					## Successfully connected and active
+	AWAITING_DISCONNECT_ACK,	## Awaiting a disconnection acknowledgement
 	LOST_CONNECTION,			## Node timed out or disconnected unexpectedly
 }
 
@@ -74,8 +75,8 @@ var _is_unknown: bool = false
 ## The Session
 var _session: NetworkSession
 
-## Network ping time in seconds
-var _ping: float = 0
+## Network ping time in milliseconds
+var _ping: int = NAN
 
 
 ## Creates a new ConstellationNode in LocalNode mode
@@ -149,7 +150,10 @@ func get_priority() -> int:
 
 ## Returns the last time this node was seen on the network
 func get_ping_time() -> float:
-	return snappedf(_ping, 0.001)
+	if is_node_connected():
+		return _ping
+	else:
+		return NAN
 
 
 ## Gets the name of this NetworkNode
@@ -158,8 +162,8 @@ func get_node_name() -> String:
 
 
 ## Sends a message to set the name of this node on the network
-func set_node_name(p_name: String) -> void:
-	pass
+func set_node_name(p_name: String) -> bool:
+	return true
 
 
 ## Override GBC set_uname method to set node name
@@ -180,7 +184,7 @@ func set_priority(p_priority: int) -> void:
 	if not is_instance_valid(_session):
 		return
 	
-	_session.set_priority_order(self, p_priority)
+	_session.set_node_priority(self, p_priority)
 
 
 ## Returns True if this node is local
@@ -193,17 +197,54 @@ func is_unknown() -> bool:
 	return _node_flags & NodeFlags.UNKNOWN
 
 
+## Returns true if this node is connected
+func is_node_connected() -> bool:
+	return _connection_state == ConnectionState.CONNECTED
+
+
 ## Returns true if this node is the master of its session
 func is_sesion_master() -> bool:
 	return _is_session_master
 
 
-## Returns True if the current connection state is either in the process of connecting, or is connected
+## Returns true if this node is connected, or in the process of connecting
 func is_in_connection_state() -> bool:
 	var connection_states: Array[ConnectionState] = [
 		ConnectionState.CONNECTING, 
 		ConnectionState.AWAITING_CONNECTION_ACK, 
-		ConnectionState.CONNECTED
+		ConnectionState.CONNECTED,
+	]
+	
+	return _connection_state in connection_states
+
+
+## Returns true if this node is in a offline state
+func is_in_offline_state() -> bool:
+	var connection_states: Array[ConnectionState] = [
+		ConnectionState.UNKNOWN,
+		ConnectionState.OFFLINE, 
+	]
+	
+	return _connection_state in connection_states
+
+
+## Returns true if this node is an an error state
+func is_in_error_state() -> bool:
+	var connection_states: Array[ConnectionState] = [
+		ConnectionState.CONNECTION_ERROR,
+		ConnectionState.LOST_CONNECTION, 
+	]
+	
+	return _connection_state in connection_states
+
+
+## Returns true if this node is in a discovered but not connected state
+## This also counts disconnection states as not connected
+func is_in_discovered_state() -> bool:
+	var connection_states: Array[ConnectionState] = [
+		ConnectionState.DISCOVERED,
+		ConnectionState.AWAITING_DISCONNECT_ACK, 
+		ConnectionState.CONNECTION_ERROR,
 	]
 	
 	return _connection_state in connection_states
