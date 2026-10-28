@@ -32,8 +32,8 @@ signal is_no_longer_session_master()
 ## Emitted when the priority of this node is changed in its session
 signal priority_changed(p_priority: int)
 
-## Emitted when the ping time to the node changes
-signal ping_changed(ping: float)
+## Emitted when the ping time to the node changes, stored as milliseconds
+signal ping_changed(ping: int)
 
 ## Emitted when this node is found on the network, when it was orignaly marked as unknown
 signal no_longer_unknown()
@@ -75,8 +75,8 @@ var _is_unknown: bool = false
 ## The Session
 var _session: NetworkSession
 
-## Network ping time in seconds
-var _ping: float = 0
+## Network ping time in milliseconds
+var _ping: int = NAN
 
 
 ## Creates a new ConstellationNode in LocalNode mode
@@ -151,7 +151,7 @@ func get_priority() -> int:
 ## Returns the last time this node was seen on the network
 func get_ping_time() -> float:
 	if is_node_connected():
-		return snappedf(_ping, 0.001)
+		return _ping
 	else:
 		return NAN
 
