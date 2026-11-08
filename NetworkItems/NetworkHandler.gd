@@ -98,6 +98,11 @@ func get_unknown_nodes() -> Array[NetworkNode]:
 	return []
 
 
+## Returns all known and unknown NetworkNodes
+func get_all_nodes() -> Array[NetworkNode]:
+	return get_known_nodes() + get_unknown_nodes()
+
+
 ## Returns all known NetworkSessions
 func get_known_sessions() -> Array[NetworkSession]:
 	return []
@@ -106,6 +111,11 @@ func get_known_sessions() -> Array[NetworkSession]:
 ## Returns all unknown NetworkSessions
 func get_unknown_sessions() -> Array[NetworkSession]:
 	return []
+
+
+## Returns all known and unknown NetworkSessions
+func get_all_sessions() -> Array[NetworkSession]:
+	return get_known_sessions() + get_unknown_sessions()
 
 
 ## Gets the name of this network handler

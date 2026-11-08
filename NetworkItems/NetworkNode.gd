@@ -42,6 +42,7 @@ signal no_longer_unknown()
 ## State Enum for remote node
 enum ConnectionState {
 	UNKNOWN,					## No state assigned yet
+	LOCAL,						## Node is the local node
 	OFFLINE,					## Node is offline
 	DISCOVERED,					## Node was found via discovery
 	CONNECTING,					## Attempting to establish connection
