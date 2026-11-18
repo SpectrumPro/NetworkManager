@@ -181,11 +181,11 @@ func set_session(p_session: NetworkSession) -> bool:
 
 
 ## Sets the priority of this node in its current session
-func set_priority(p_priority: int) -> void:
+func set_priority(p_priority: int) -> bool:
 	if not is_instance_valid(_session):
-		return
+		return false
 	
-	_session.set_node_priority(self, p_priority)
+	return _session.set_node_priority(self, p_priority)
 
 
 ## Returns True if this node is local
