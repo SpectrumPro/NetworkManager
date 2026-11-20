@@ -19,6 +19,9 @@ signal master_changed(node: NetworkNode)
 ## Emitted when the priority order of a node is changed
 signal priority_changed(node: NetworkNode, position: int)
 
+## Emitted when the session state changes
+signal session_state_changhed(session_state: SessionState)
+
 
 ## Enum for session flags
 enum SessionFlags {
@@ -36,11 +39,23 @@ enum NodeFilter {
 	MANUAL,				## Manualy specify a list of nodes to send to
 }
 
+
+## Enum for SessionState
+enum SessionState {
+	UNKNOWN,		## Unknown / default state
+	NORMAL,			## Session running normaly
+	MISSING_MASTER	## Session master missing
+}
+
+
 ## The current SessionMaster
 var _session_master: NetworkNode
 
 ## Session Flags
 var _session_flags: int = SessionFlags.NONE
+
+## The current SessionState
+var _session_state: SessionState = SessionState.NORMAL
 
 
 ## Creates a new unknown session
@@ -49,6 +64,7 @@ static func create_unknown_session(p_session_id: String) -> NetworkSession:
 	
 	session._mark_as_unknown(true)
 	session._set_name("UnknownSession")
+	session
 	
 	return session
 
@@ -57,6 +73,14 @@ static func create_unknown_session(p_session_id: String) -> NetworkSession:
 func _init(p_uuid: String = UUID.v4(), ...p_args: Array[Variant]) -> void:
 	super._init(p_uuid, p_args)
 	_set_class_name("NetworkSession")
+	
+	_settings.register_status(
+		"SessionStatus", 
+		Data.Type.ENUM, 
+		get_session_state, 
+		[session_state_changhed], 
+		SessionState
+	)
 
 
 ## Sets the position of a node in the priority order
@@ -119,6 +143,11 @@ func get_session_flags() -> int:
 	return _session_flags
 
 
+## Returns the current SessionState
+func get_session_state() -> SessionState:
+	return _session_state
+
+
 ## Returns true if this session has a master
 func has_session_master() -> bool:
 	return _session_master != null
@@ -143,9 +172,17 @@ func _set_name(p_name: String) -> bool:
 	return true
 
 
+## Sets the SessionState
+func _set_session_state(p_session_state: SessionState) -> void:
+	_session_state = p_session_state
+	session_state_changhed.emit(_session_state)
+
+
 ## Marks or unmarks this node as unknown
 func _mark_as_unknown(p_unknown: bool) -> void:
 	if p_unknown:
 		_session_flags |= SessionFlags.UNKNOWN
+		_set_session_state(SessionState.UNKNOWN)
 	else:
 		_session_flags &= ~SessionFlags.UNKNOWN
+		_set_session_state(SessionState.NORMAL)
