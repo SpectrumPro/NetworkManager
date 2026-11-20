@@ -42,6 +42,7 @@ signal no_longer_unknown()
 ## State Enum for remote node
 enum ConnectionState {
 	UNKNOWN,					## No state assigned yet
+	LOCAL,						## Node is the local node
 	OFFLINE,					## Node is offline
 	DISCOVERED,					## Node was found via discovery
 	CONNECTING,					## Attempting to establish connection
@@ -180,11 +181,11 @@ func set_session(p_session: NetworkSession) -> bool:
 
 
 ## Sets the priority of this node in its current session
-func set_priority(p_priority: int) -> void:
+func set_priority(p_priority: int) -> bool:
 	if not is_instance_valid(_session):
-		return
+		return false
 	
-	_session.set_node_priority(self, p_priority)
+	return _session.set_node_priority(self, p_priority)
 
 
 ## Returns True if this node is local
@@ -213,6 +214,7 @@ func is_in_connection_state() -> bool:
 		ConnectionState.CONNECTING, 
 		ConnectionState.AWAITING_CONNECTION_ACK, 
 		ConnectionState.CONNECTED,
+		ConnectionState.LOCAL
 	]
 	
 	return _connection_state in connection_states
